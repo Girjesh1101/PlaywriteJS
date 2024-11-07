@@ -1,1 +1,26 @@
 npm iinit playwrite 
+
+
+step1 1 : all commands come from playwrights/test
+
+Note finds locators -> page.locator(xpath/css)
+
+1. send keys --> page.fill or page.type(); // type is not using now .
+
+2. click  --> page.click();
+
+3. getTitle --> page.title();
+
+4. getText --> page.textContent(); / for all text  page.allTextContents();
+
+Note : run specific spec file 
+    --> npx playwright test path/*.spec.js
+
+5. select --> page.locator().selectOption({value:value}); // we can select the element by three ways
+    1. label:text
+    2. value:value
+    3. index:1
+
+6. handle radio --> we can handle radio button by click() .
+
+7. assertion for check --> page.locator().toBeChecked();
