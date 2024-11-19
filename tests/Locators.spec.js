@@ -49,7 +49,7 @@ test('login page success' , async () =>{
 })
 
 // dynamic page load 
-test.only('new browswr' , async ()=>{
+test('new browswr' , async ()=>{
 
     const browser = await chromium.launch({headless : false});
     const page = await browser.newPage();

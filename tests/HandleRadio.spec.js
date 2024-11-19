@@ -36,6 +36,9 @@ test('handle dropdown ' , async ()=>{
     //select by index
     await page.locator('select.form-control').selectOption({index:1});
     
+    //check the above link is blining or not
+
+    await expect( page.locator('[href*="documents-request"]')).toHaveAttribute('class','blinkingText');
 
     await page.waitForTimeout(5000);
 

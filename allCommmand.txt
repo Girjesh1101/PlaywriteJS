@@ -24,3 +24,24 @@ Note : run specific spec file
 6. handle radio --> we can handle radio button by click() .
 
 7. assertion for check --> page.locator().toBeChecked();
+
+Note : if u want to debug the code then 
+
+     --> npx playwright test path/*.spec.js --debug
+
+Note : write a code in playwright with record and script
+    --> npx playwright codegen https://google.com
+
+Note : take screenshot 
+
+steps -> playwright.config.js --> in user add (  screenshot : 'on',
+    trace: 'on')
+
+8. filter() --> use for filter the elements
+
+9. goBack()  --> go back button in browser
+
+9. goForward() --> go forward in browser
+
+
+

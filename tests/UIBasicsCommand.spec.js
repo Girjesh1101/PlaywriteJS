@@ -1,7 +1,7 @@
 const { test, chromium, expect,  } = require("@playwright/test");
 
 
-test.skip('Playwright test' , async ( { browser  })=>{
+test('Playwright test' , async ( { browser  })=>{
 
     // chrome - plugins / cookies
 
