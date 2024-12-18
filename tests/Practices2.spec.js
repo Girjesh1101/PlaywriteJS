@@ -43,3 +43,16 @@ test('handle Alert' , async ()=>{
 
 
 })
+
+test('handle frame', async ()=>{
+
+    const browser = await chromium.launch({headless:false});
+    const page = await browser.newPage();
+    await page.goto('https://rahulshettyacademy.com/AutomationPractice/');
+
+    const framePage = page.frameLocator('#courses-iframe');
+    framePage.locator('li a[href="lifetime-access"]:visible').click();
+    const text = await framePage.locator('.text h2').textContent();
+    console.log(text);
+
+})
