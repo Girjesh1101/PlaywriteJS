@@ -1,15 +1,22 @@
 const { test, chromium, expect } = require("@playwright/test");
-// const {loginPage} = require('../pageObjects/loginPage');
 
-// const {DashboardPage} = require('../pageObjects/DashboardPage');
+// Json ->string -> js object
+const data = JSON.parse(JSON.stringify(require("../utils/placeorderTestData.json")));
 
 const {POManager} = require('../pageObjects/POManager');
 
-test('end 2 end ' ,async () =>{
 
-    const productName  = 'ZARA COAT 3';
-    const email = 'Prem@yopmail.com';
-    const password  = 'Prem@123';
+// run test case is in pareller or sequence mode
+// test.describe.configure({mode:'parallel', retries:1 , timeout:5000})
+
+// use for loop only if you have multiple data in your utils files
+for(const dataset of data){
+
+test(`@E2E end 2 end login for ${dataset.productName}` ,async () =>{
+
+    // const productName  = 'ZARA COAT 3';
+    // const email = 'Prem@yopmail.com';
+    // const password  = 'Prem@123';
 
     const browser = await chromium.launch({headless : false});
     const page = await browser.newPage();
@@ -25,10 +32,7 @@ test('end 2 end ' ,async () =>{
     // const loginPageObj = new loginPage(page);
     const loginPageObj = poManagerObj.getLoginPage();
     await loginPageObj.goTo();
-    await loginPageObj.validLogin(email , password);
-
-   
-
+    await loginPageObj.validLogin(dataset.email , dataset.password);
 
     // await page.waitForLoadState('networkidle');
     // const title = await page.locator('.card-body b').allTextContents();
@@ -51,71 +55,67 @@ test('end 2 end ' ,async () =>{
 
     // const dashboardObj = new DashboardPage(page);
     const dashboardObj = poManagerObj.getDashboardPage();
-    await dashboardObj.selectProduct(productName);
+    await dashboardObj.selectProduct(dataset.productName);
     await dashboardObj.navigateToCart();
 
-    // calling with POMnager
+    // await page.locator('div li').first().waitFor();
 
-
-    await page.locator('div li').first().waitFor();
-
-    const isProductVisible = await page.locator(`h3:has-text('ZARA COAT 3')`).isVisible();
-    console.log(isProductVisible);
+    // const isProductVisible = await page.locator(`h3:has-text('ZARA COAT 3')`).isVisible();
+    // console.log(isProductVisible);
     // expect(isProductVisible).toBeTruthy();
 
-    await page.locator('text=Checkout').click();
+    // await page.locator('text=Checkout').click();
 
-    await page.locator("[placeholder*='Select Country']").pressSequentially("ind");
+    const cartPageObj = poManagerObj.getCartPage();
+    cartPageObj.productValidation();
 
-    const dropdown = page.locator('.ta-results');
-    await dropdown.waitFor();
-    const optionCount = await dropdown.locator("button").count();
+    // await page.locator("[placeholder*='Select Country']").pressSequentially("ind");
 
-    for(let i = 0 ; i< optionCount ; i++){
+    // const dropdown = page.locator('.ta-results');
+    // await dropdown.waitFor();
+    // const optionCount = await dropdown.locator("button").count();
 
-        const countryName = await dropdown.locator('button').nth(i).textContent();
-        if(countryName === ' India'){
+    // for(let i = 0 ; i< optionCount ; i++){
 
-            await dropdown.locator("button").nth(i).click();
-            break;
-        }
-    }
+    //     const countryName = await dropdown.locator('button').nth(i).textContent();
+    //     if(countryName === ' India'){
+
+    //         await dropdown.locator("button").nth(i).click();
+    //         break;
+    //     }
+    // }
+
+    const checkoutPageObj = poManagerObj.getCheckoutPage();
+    checkoutPageObj.detailsForm();
 
     // assertion for 
 
-    expect( await page.locator('.details__user div label')).toHaveText('anshika@gmail.com');
+    // expect( await page.locator('.details__user div label')).toHaveText('anshika@gmail.com');
 
-    await page.locator('.action__submit').click();
+    // await page.locator('.action__submit').click();
 
-    // expect(await page.locator("h1[class='hero-primary']")).toHaveText(' Thankyou for the order. ');
+    checkoutPageObj.validateDetails(dataset.email);
 
-    const orderId = await page.locator('.ng-star-inserted td label').last().textContent();
-    console.log(orderId);
-
-    await page.locator('button[routerlink*="myorder"]').click();
-    
-    await page.locator('tbody').waitFor();
-
-    const rows = await page.locator('tbody tr');
-
-    for(let i = 0 ;  i < await rows.count() ; i++ ){
-
-        const orderNumber = await rows.nth(i).locator('th').textContent();
-        console.log(orderNumber);
-
-        if(orderId.includes(orderNumber)){
-            await rows.nth(i).locator('button').first().click();
-            break;
-        }
-
-    }
-    
-    const orderIDDetails = await page.locator('div.col-text').textContent();
-
-    // expect(orderId.includes(orderIDDetails)).toBeTruthy();
-
-
+    const myOderPageObj = poManagerObj.getMyOrderPage(page);
+    myOderPageObj.validateProductOrder();
     await page.waitForTimeout(5000);
 
 
+})
+}
+
+test('@Web google', async()=>{
+
+    const browser = await chromium.launch({headless : false});
+    const page = await browser.newPage();
+
+    page.goto('https://www.google.com');
+})
+
+test('@Web youtube', async()=>{
+
+    const browser = await chromium.launch({headless : false});
+    const page = await browser.newPage();
+
+    page.goto('https://www.youtube.com');
 })

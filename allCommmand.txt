@@ -44,4 +44,22 @@ steps -> playwright.config.js --> in user add (  screenshot : 'on',
 9. goForward() --> go forward in browser
 
 
+if u have two config file then use below command 
+npx playwright test tests/e2ePO.spec.js --config playwright.config1.js
 
+Note : suppose u want to run only tag given test case e.g @Web (referen  e2ePO.spec.js)
+    command -> npx playwright test --grep @Web
+
+Allure Reports : first install dependecy allure-playewright
+
+1.npx playewright test --reporter=line,allure-playwright
+2.after run -> allure generate ./allure-results --clean
+3. after clean allure-report generate -> allure open ./allure-report
+
+
+Note : create custom test script 
+package.json -> script -     "regression" : "npx playwright test",
+    "webTest" : "npx playwright test --grep @Web",
+    "e2e" : "npx playwright test --grep @E2E"
+
+for run script -> npm run webTest 

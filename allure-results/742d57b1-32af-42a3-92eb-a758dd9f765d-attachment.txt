@@ -1,0 +1,4 @@
+[ 'ZARA COAT 3', 'ADIDAS ORIGINAL', 'IPHONE 13 PRO', 'qwerty' ]
+true
+locator('.ng-star-inserted td label')
+67693fd8e2b5443b1fff246e
